@@ -18,6 +18,36 @@
         <div class="headingdiv">
             <p class="heading">Music Player</p>
         </div>
+        
+        <div class="name">
+            <p id="songName"></p>
+        </div>
+        <div class="name">
+    		<p id="currentSongName"></p>
+	</div>
+        <div class="player">
+            <audio controls id="audioPlayer" class="playeraudio1">
+                /*remove controls from above to hide the bar*/
+            </audio>
+        </div>
+
+        <div class="controls">
+            <div class="original" onclick="restoreOriginalList()">
+                <i class="fa-solid fa-rotate-left"></i>
+            </div>
+            <div class="previous" onclick="playPreviousSong()">
+                <i class="fa-solid fa-backward"></i>
+            </div>
+            <div class="play" onclick="playpause()">
+                <i class="fa-solid fa-play" id="ctrlIcon"></i>
+            </div>
+            <div class="next" onclick="playNextSong()">
+                <i class="fa-solid fa-forward"></i>
+            </div>
+            <div class="shuffle" onclick="shuffleSongs()">
+                <i class="fa-solid fa-shuffle"></i>
+            </div>
+        </div>
         <h2>Songs</h2>
         <div class="song-list-container">
             <ul id="song-list">
@@ -27,30 +57,6 @@
                     }
                 </script>
             </ul>
-        </div>
-
-        <div class="name">
-            <p id="songName"></p>
-        </div>
-        <div class="name">
-    		<p id="currentSongName"></p>
-	</div>
-        <div class="player">
-            <audio controls id="audioPlayer" class="playeraudio1">
-                <source id="audioSource" src="/static/audio/song1.mp3" type="audio/mpeg">
-            </audio>
-        </div>
-
-        <div class="controls">
-            <div><i class="fa-solid fa-backward"></i></div>
-            <div><i class="fa-solid fa-play"></i></div>
-            <div><i class="fa-solid fa-forward"></i></div>
-            <div><i class="fa-solid fa-shuffle"></i></div>
-        </div>
-        <div class="buttonContainer">
-            <button id="previousButton">Previous</button>
-            <button id="nextButton">Next</button>
-            <button id="shuffleButton">Shuffle</button>
         </div>
     </div>
 </div>
@@ -66,6 +72,7 @@
     const audioPlayer = document.getElementById("audioPlayer");
     const songItems = document.getElementsByClassName("songItem");
     const currentSongNameElement = document.getElementById("currentSongName");
+    let ctrlIcon = document.getElementById("ctrlIcon");
 
 
     function playSong() {
@@ -75,6 +82,19 @@
         audioPlayer.load();
         audioPlayer.play();
         highlightCurrentSong();
+    }
+
+    function playpause(){
+        if(ctrlIcon.classList.contains("fa-pause")){
+            audioPlayer.pause();
+            ctrlIcon.classList.remove("fa-pause");
+            ctrlIcon.classList.add("fa-play");
+        }
+        else{
+            audioPlayer.play();
+            ctrlIcon.classList.add("fa-pause");
+            ctrlIcon.classList.remove("fa-play");
+        }
     }
 
     function playPreviousSong() {
@@ -121,6 +141,17 @@
         }
    }
 
+   function restoreOriginalList() {
+            songs = [];
+            for (let i = 1; i <= 48; i++) {
+                songs.push(`Songs/Audio-${i}.mp3`);
+            }
+            currentSongIndex = 0;
+            playSong();
+            updateDisplayedSongs();
+            highlightCurrentSong();
+        }
+
     document.addEventListener("DOMContentLoaded", function () {
         playSong();
 
@@ -130,24 +161,6 @@
                 playSong();
             });
         }
-
-        document.getElementById("previousButton").addEventListener("click", function () {
-            if (audioPlayer.currentTime < 5) {
-                playPreviousSong();
-            } else {
-                audioPlayer.currentTime = 0;
-                audioPlayer.play();
-            }
-        });
-
-        document.getElementById("nextButton").addEventListener("click", function () {
-            playNextSong();
-        });
-
-        document.getElementById("shuffleButton").addEventListener("click", function () {
-            shuffleSongs();
-        });
-
         audioPlayer.addEventListener("ended", function () {
             playNextSong();
         });
