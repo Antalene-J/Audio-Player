@@ -10,6 +10,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;700&family=Poppins:ital,wght@0,500;0,700;1,400;1,600&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
 </head>
 <body>
@@ -26,9 +27,16 @@
     		<p id="currentSongName"></p>
 	</div>
         <div class="player">
-            <audio controls id="audioPlayer" class="playeraudio1">
+            <audio id="audioPlayer" class="playeraudio1">
                 /*remove controls from above to hide the bar*/
             </audio>
+        </div>
+
+        <div class="slidercontainer">
+            <div class="current-time">00:00</div>
+            <input type="range" value="0" min="0" max="100" class="progress" onchange="seekTo()">
+            <div class="total-time">00:00</div>
+
         </div>
 
         <div class="controls">
@@ -73,7 +81,16 @@
     const songItems = document.getElementsByClassName("songItem");
     const currentSongNameElement = document.getElementById("currentSongName");
     let ctrlIcon = document.getElementById("ctrlIcon");
+    const progress = document.querySelector(".progress");
+    const currentTime = document.querySelector(".current-time");
+    const totalTime = document.querySelector(".total-time");
 
+    function seekTo() {
+        const seekToTime = audioPlayer.duration * (progress.value / 100);
+        audioPlayer.currentTime = seekToTime;
+    }
+
+    
 
     function playSong() {
         const currentSongName = songs[currentSongIndex];
@@ -125,15 +142,6 @@
         updateDisplayedSongs();
     	highlightCurrentSong();
     }
-    function shuffleSongs() {
-    for (let i = songs.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [songs[i], songs[j]] = [songs[j], songs[i]];
-    }
-    currentSongIndex = 0;
-    playSong();
-    updateDisplayedSongs();
-   }
 
    function updateDisplayedSongs() {
         for (let i = 0; i < songItems.length; i++) {
@@ -166,6 +174,26 @@
         });
     });
     
+    audioPlayer.addEventListener("loadedmetadata", function () {
+        progress.value = "0";
+        const totalTimeMinutes = Math.floor(audioPlayer.duration / 60);
+        const totalTimeSeconds = Math.floor(audioPlayer.duration - totalTimeMinutes * 60);
+
+        let formattedTotalTime = totalTimeMinutes + ":" + (totalTimeSeconds < 10 ? "0" : "") + totalTimeSeconds;
+        totalTime.textContent = formattedTotalTime;
+    });
+
+    audioPlayer.addEventListener("timeupdate", function () {
+        const currentTimeMinutes = Math.floor(audioPlayer.currentTime / 60);
+        const currentTimeSeconds = Math.floor(audioPlayer.currentTime - currentTimeMinutes * 60);
+
+        let formattedCurrentTime = currentTimeMinutes + ":" + (currentTimeSeconds < 10 ? "0" : "") + currentTimeSeconds;
+        currentTime.textContent = formattedCurrentTime;
+
+        const progressValue = (audioPlayer.currentTime / audioPlayer.duration) * 100;
+        progress.value = progressValue;
+    });
+
 </script>
 
 </body>

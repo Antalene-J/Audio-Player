@@ -16,7 +16,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
-    background-color: #1DB954; /* box color*/
+    background-color: rgb(255, 103, 0); /* box color*/
 
     padding-left: 30px;
     padding-right: 30px;
@@ -71,10 +71,12 @@ button{
     width: 100%;
 }
 .song-list-container {
-  height: 200px;
+  height: 400px;
   overflow-y: auto;
   width: 100%;
+  background-color: rgb(255, 165, 89);
 }
+
 
 #song-list {
   list-style-type: none;
@@ -104,7 +106,7 @@ button{
   cursor: pointer;
 }
 .currentSong {
-  background-color: lightblue;
+  background-color: rgb(255, 230, 199);
 }
 .previous,
 .play,
@@ -114,6 +116,32 @@ button{
     padding: 25px;
     cursor: pointer;
     border-radius: 50%;
+}
+.progress{
+    -webkit-appearance: none;
+    width: 500px;
+    height: 6px;
+    background: black;
+    border-radius: 4px;
+    cursor: pointer;
+    margin: 10px 10px;
+}
+
+.progress::-webkit-slider-thumb{
+    -webkit-appearance: none;
+    background: rgb(255, 165, 89);
+    width: 20px;
+    height: 20px;
+    border-radius: 100%;
+    border: 4px solid black;
+    cursor: pointer;
+    box-shadow: 0 5px 5px rgb(255, 26, 26, 0.22);
+}
+
+.slidercontainer{
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 
