@@ -86,6 +86,7 @@ button{
 #song-list li {
   cursor: pointer;
   padding: 10px;
+  text-align: center;
 }
 .controls{
   display: flex;
