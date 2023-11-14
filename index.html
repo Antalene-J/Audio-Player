@@ -6,39 +6,34 @@
     <script src="https://kit.fontawesome.com/f96eee794e.js" crossorigin="anonymous"></script>
     <title>Music Player</title>
     <link rel="stylesheet" href="styles.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;700&family=Poppins:ital,wght@0,500;0,700;1,400;1,600&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
 </head>
 <body>
 <div class="gridcontainer">
-    <div class="grid">
-        <div class="headingdiv">
-            <p class="heading">Music Player</p>
+    <div class="controller">
+        <div class="heading">
+            <div class="headingdiv">
+                <p class="heading1">Music Player</p>
+            </div>
+            
+            <div class="name">
+                <p id="currentSongName"></p>
         </div>
-        
-        <div class="name">
-            <p id="songName"></p>
-        </div>
-        <div class="name">
-    		<p id="currentSongName"></p>
-	</div>
+
         <div class="player">
             <audio id="audioPlayer" class="playeraudio1">
                 /*remove controls from above to hide the bar*/
             </audio>
         </div>
-
+    
         <div class="slidercontainer">
             <div class="current-time">00:00</div>
             <input type="range" value="0" min="0" max="100" class="progress" onchange="seekTo()">
             <div class="total-time">00:00</div>
 
-        </div>
-
+        </div>  
+        
         <div class="controls">
             <div class="original" onclick="restoreOriginalList()">
                 <i class="fa-solid fa-rotate-left"></i>
@@ -55,13 +50,16 @@
             <div class="shuffle" onclick="shuffleSongs()">
                 <i class="fa-solid fa-shuffle"></i>
             </div>
-        </div>
+        </div>            
+    </div>
+
+    <div class="list">
         <h2>Songs</h2>
         <div class="song-list-container">
             <ul id="song-list">
                 <script>
                     for (let i = 1; i <= 48; i++) {
-                        document.write(`<li class="songItem">Audio-${i}.mp3</li>`);
+                        document.write(`<li class="songItem" data-index="${i - 1}">Audio-${i}.mp3</li>`);
                     }
                 </script>
             </ul>
@@ -69,132 +67,7 @@
     </div>
 </div>
 
-<script>
-    const songListElement = document.getElementById("song-list");
-    let songs = [];
-    for (let i = 1; i <= 48; i++) {
-        songs.push(`Songs/Audio-${i}.mp3`);
-    }
-
-    let currentSongIndex = 0;
-    const audioPlayer = document.getElementById("audioPlayer");
-    const songItems = document.getElementsByClassName("songItem");
-    const currentSongNameElement = document.getElementById("currentSongName");
-    let ctrlIcon = document.getElementById("ctrlIcon");
-    const progress = document.querySelector(".progress");
-    const currentTime = document.querySelector(".current-time");
-    const totalTime = document.querySelector(".total-time");
-
-    function seekTo() {
-        const seekToTime = audioPlayer.duration * (progress.value / 100);
-        audioPlayer.currentTime = seekToTime;
-    }
-
-    
-
-    function playSong() {
-        const currentSongName = songs[currentSongIndex];
-        currentSongNameElement.textContent = `${currentSongName.slice(6)}`;
-        audioPlayer.src = songs[currentSongIndex];
-        audioPlayer.load();
-        audioPlayer.play();
-        highlightCurrentSong();
-    }
-
-    function playpause(){
-        if(ctrlIcon.classList.contains("fa-pause")){
-            audioPlayer.pause();
-            ctrlIcon.classList.remove("fa-pause");
-            ctrlIcon.classList.add("fa-play");
-        }
-        else{
-            audioPlayer.play();
-            ctrlIcon.classList.add("fa-pause");
-            ctrlIcon.classList.remove("fa-play");
-        }
-    }
-
-    function playPreviousSong() {
-        currentSongIndex = (currentSongIndex - 1 + songs.length) % songs.length;
-        playSong();
-    }
-
-    function playNextSong() {
-        currentSongIndex = (currentSongIndex + 1) % songs.length;
-        playSong();
-    }
-    function highlightCurrentSong() {
-    for (let i = 0; i < songItems.length; i++) {
-        if (i === currentSongIndex) {
-            songItems[i].classList.add("currentSong");
-        } else {
-            songItems[i].classList.remove("currentSong");
-        }
-    }
-    }
-    function shuffleSongs() {
-        for (let i = songs.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [songs[i], songs[j]] = [songs[j], songs[i]];
-        }
-        currentSongIndex = 0;
-        playSong();
-        updateDisplayedSongs();
-    	highlightCurrentSong();
-    }
-
-   function updateDisplayedSongs() {
-        for (let i = 0; i < songItems.length; i++) {
-            songItems[i].textContent = songs[i].slice(6);
-        }
-   }
-
-   function restoreOriginalList() {
-            songs = [];
-            for (let i = 1; i <= 48; i++) {
-                songs.push(`Songs/Audio-${i}.mp3`);
-            }
-            currentSongIndex = 0;
-            playSong();
-            updateDisplayedSongs();
-            highlightCurrentSong();
-        }
-
-    document.addEventListener("DOMContentLoaded", function () {
-        playSong();
-
-        for (let i = 0; i < songItems.length; i++) {
-            songItems[i].addEventListener("click", function () {
-                currentSongIndex = i;
-                playSong();
-            });
-        }
-        audioPlayer.addEventListener("ended", function () {
-            playNextSong();
-        });
-    });
-    
-    audioPlayer.addEventListener("loadedmetadata", function () {
-        progress.value = "0";
-        const totalTimeMinutes = Math.floor(audioPlayer.duration / 60);
-        const totalTimeSeconds = Math.floor(audioPlayer.duration - totalTimeMinutes * 60);
-
-        let formattedTotalTime = totalTimeMinutes + ":" + (totalTimeSeconds < 10 ? "0" : "") + totalTimeSeconds;
-        totalTime.textContent = formattedTotalTime;
-    });
-
-    audioPlayer.addEventListener("timeupdate", function () {
-        const currentTimeMinutes = Math.floor(audioPlayer.currentTime / 60);
-        const currentTimeSeconds = Math.floor(audioPlayer.currentTime - currentTimeMinutes * 60);
-
-        let formattedCurrentTime = currentTimeMinutes + ":" + (currentTimeSeconds < 10 ? "0" : "") + currentTimeSeconds;
-        currentTime.textContent = formattedCurrentTime;
-
-        const progressValue = (audioPlayer.currentTime / audioPlayer.duration) * 100;
-        progress.value = progressValue;
-    });
-
-</script>
+<script src="script.js"></script>
 
 </body>
 </html>

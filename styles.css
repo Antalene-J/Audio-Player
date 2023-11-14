@@ -1,30 +1,29 @@
 .gridcontainer{
     display: flex;
-    flex-direction: column;
     height:100%;
-    background-color: black; /*page background*/
+    width: 100%;
+    background-color: white; /*page background*/
     justify-content: center;
     align-items: center;
 }
-.grid{
-    padding-top: 0;
-    padding-bottom:0 ;
-    padding-left: 0;
-    width: 650px;
-    height: 950px;
+.controller{
+    background-color: black;
+    display: flex;
+    height: 100%;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+}
+
+.list{
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: space-between;
-    background-color: rgb(255, 103, 0); /* box color*/
-
-    padding-left: 30px;
-    padding-right: 30px;
-    padding-top:30px;
-    padding-bottom:30px;
-    border: none;
-    border-radius: 18px;
-    box-shadow: 0 1.2rem 3rem 0.5rem rgba(0,0,0,0.2);
+    background-color: rgb(255, 165, 89);
+    justify-content: center;
+    height: 100%;
+    width: 50%;
+    border-radius: 20px;
 }
 html,body{
     height: 100%;
@@ -40,9 +39,20 @@ body{
     font-size: 28px;
 }
 .heading{
+    background-color: rgb(255, 96, 0);
     font-size: 40px;
     font-weight: bold;
     margin-bottom: 0;
+    align-items: center;
+    width: 50%;
+    height: 50%;
+    border-radius: 20px;
+    box-shadow: 0px -25px 20px -10px rgb(255, 171, 118), 0px 25px 20px -10px rgb(255, 171, 118);
+}
+.heading1{
+    font-size: 40px;
+    font-weight: bold;
+    text-align: center;
 }
 .logo{
     height: 40px;
@@ -71,22 +81,30 @@ button{
     width: 100%;
 }
 .song-list-container {
-  height: 400px;
+  height: 100%;
   overflow-y: auto;
   width: 100%;
-  background-color: rgb(255, 165, 89);
+  background-color: rgb(255, 174, 108);
 }
 
-
+.name{
+    text-align: center;
+    padding: 30px;
+}
 #song-list {
-  list-style-type: none;
-  padding: 0;
+    display: flex;
+    flex-direction: column;
+}
+.songItem {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 #song-list li {
   cursor: pointer;
   padding: 10px;
-  text-align: center;
+  text-align: left;
 }
 .controls{
   display: flex;
@@ -95,14 +113,14 @@ button{
   align-items: center;                
 }       
 .controls dev{
-  width: 100px;
+  width: 60px;
   height: 60px;
   margin: 20px;
-  background: red ;
+  border-radius: 50%;
+  background: white;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  border-radius: 50%;
   color: green;
   cursor: pointer;
 }
@@ -110,15 +128,37 @@ button{
   background-color: rgb(255, 230, 199);
 }
 .previous,
-.play,
 .next,
 .original,
 .shuffle{
     padding: 25px;
     cursor: pointer;
     border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    margin: 10px;
+    border-radius: 50%;
+    background: rgb(255, 230, 199);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 10px 20px rgb(80, 75, 70);
 }
-.progress{
+.play{
+    padding: 25px;
+    cursor: pointer;
+    border-radius: 50%;
+    width: 35px;
+    height: 35px;
+    margin: 20px;
+    border-radius: 50%;
+    background: rgb(255, 230, 199);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 10px 20px rgb(80, 75, 70);
+}
+.progress {
     -webkit-appearance: none;
     width: 500px;
     height: 6px;
@@ -126,9 +166,10 @@ button{
     border-radius: 4px;
     cursor: pointer;
     margin: 10px 10px;
+    color: rgb(255, 103, 0);
 }
 
-.progress::-webkit-slider-thumb{
+.progress::-webkit-slider-thumb {
     -webkit-appearance: none;
     background: rgb(255, 165, 89);
     width: 20px;
@@ -138,6 +179,17 @@ button{
     cursor: pointer;
     box-shadow: 0 5px 5px rgb(255, 26, 26, 0.22);
 }
+
+.progress::-webkit-slider-runnable-track {
+    -webkit-appearance: none;
+}
+.progress::-webkit-slider-thumb::before{
+    background-color: blue;
+}
+
+
+
+
 
 .slidercontainer{
     display: flex;
