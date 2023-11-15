@@ -68,7 +68,7 @@ const songListElement = document.getElementById("song-list");
         }
     }
     }
-    function shuffleSongs() {
+        function shuffleSongs() {
         for (let i = songs.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
             [songs[i], songs[j]] = [songs[j], songs[i]];
@@ -76,12 +76,13 @@ const songListElement = document.getElementById("song-list");
         currentSongIndex = 0;
         playSong();
         updateDisplayedSongs();
-    	highlightCurrentSong();
+            highlightCurrentSong();
         if(ctrlIcon.classList.contains("fa-play")){
             ctrlIcon.classList.add("fa-pause");
             ctrlIcon.classList.remove("fa-play");
         }
     }
+
 
     function updateDisplayedSongs() {
         const promises = [];
