@@ -68,20 +68,34 @@ const songListElement = document.getElementById("song-list");
         }
     }
     }
-        function shuffleSongs() {
+        function fetchRandomIndices() {
+    return fetch('http://localhost:8000/generate_random_indices')
+        .then(response => response.json())
+        .then(indices => {
+            return indices;
+        })
+        .catch(error => console.error('Error fetching random indices:', error));
+}
+
+function shuffleSongs() {
+    // Call the server to get random indices
+    fetchRandomIndices().then(indices => {
+        // Use the obtained indices to shuffle songs
         for (let i = songs.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
+            const j = indices[i];
             [songs[i], songs[j]] = [songs[j], songs[i]];
         }
         currentSongIndex = 0;
         playSong();
         updateDisplayedSongs();
-            highlightCurrentSong();
-        if(ctrlIcon.classList.contains("fa-play")){
+        highlightCurrentSong();
+        if (ctrlIcon.classList.contains("fa-play")) {
             ctrlIcon.classList.add("fa-pause");
             ctrlIcon.classList.remove("fa-play");
         }
-    }
+    
+}
+
 
 
     function updateDisplayedSongs() {
